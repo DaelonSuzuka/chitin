@@ -1,7 +1,7 @@
 #ifndef _SHELL_COMMAND_UTILS_H_
 #define _SHELL_COMMAND_UTILS_H_
 
-#include "os/serial_port.h"
+#include "serial_port.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
