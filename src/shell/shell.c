@@ -23,7 +23,7 @@ void shell_register_callback(shell_callback_t callback) {
 
 /*  Program termination
 
-    There's no way to know what state a program was in when we kill it. 
+    There's no way to know what state a program was in when we kill it.
 
     Therefore, just to be safe we should reset text colors, clear the screen,
     draw a new prompt, and make sure the cursor is visible.
@@ -56,7 +56,7 @@ void shell_init(uart_config_t *config) {
 
 /* ************************************************************************** */
 
-void process_escape_sequence(key_t key) {
+void process_escape_sequence(sh_key_t key) {
     switch (key.key) {
     default: // unrecognized keys don't do anything
         return;
@@ -163,7 +163,7 @@ void shell_update(void) {
 
     // control characters and escape sequences
     if (iscntrl(currentChar)) {
-        key_t key = identify_key(currentChar);
+        sh_key_t key = identify_key(currentChar);
         process_escape_sequence(key);
         return;
     }

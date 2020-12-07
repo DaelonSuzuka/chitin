@@ -32,7 +32,7 @@ int8_t reboot_callback(char currentChar) {
     }
 
     if (iscntrl(currentChar)) {
-        key_t key = identify_key(currentChar);
+        sh_key_t key = identify_key(currentChar);
         switch (key.key) {
         default:
             return 0;

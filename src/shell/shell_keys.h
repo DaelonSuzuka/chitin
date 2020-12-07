@@ -53,18 +53,18 @@ typedef enum { KEY_MODIFIER_LIST } key_modifiers_t;
 typedef struct {
     key_names_t key;
     key_modifiers_t mod;
-} key_t;
+} sh_key_t;
 
 /* ************************************************************************** */
 
-// print the name and modifier of the provided key_t object
-extern void print_key(key_t *key);
+// print the name and modifier of the provided sh_key_t object
+extern void print_key(sh_key_t *key);
 
 // toggle real time key decoding diagnostics
 extern void toggle_key_diagnostics(void);
 
 // returns a key object that identifies the pressed key
-extern key_t identify_key(char currentChar);
+extern sh_key_t identify_key(char currentChar);
 
 /* ************************************************************************** */
 

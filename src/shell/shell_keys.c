@@ -12,7 +12,7 @@ const char *keyNameString[] = {KEY_NAME_LIST};
 const char *keyModifierString[] = {KEY_MODIFIER_LIST};
 #undef X
 
-void print_key(key_t *key) {
+void print_key(sh_key_t *key) {
     if (key->mod != NONE) {
         print(keyModifierString[key->mod]);
         print(" + ");
@@ -88,8 +88,8 @@ typedef enum {
     up arrow: (ESC, 65)
     pageup: (ESC, 53, ~)
 */
-static key_t decode_escape_sequence(sequence_t *sequence) {
-    key_t newKey = {UNKNOWN, NONE};
+static sh_key_t decode_escape_sequence(sequence_t *sequence) {
+    sh_key_t newKey = {UNKNOWN, NONE};
 
     switch (sequence->length) {
     case 0:
@@ -295,7 +295,7 @@ static sequence_t intercept_escape_sequence(void) {
         if (sequence.buffer[sequence.length] != 0) {
             sequence.length++;
 
-            key_t key = decode_escape_sequence(&sequence);
+            sh_key_t key = decode_escape_sequence(&sequence);
             if (key.key != UNKNOWN) {
                 break;
             }
@@ -326,8 +326,8 @@ typedef enum {
 
     This only identifies a subset of the non-sequence control characters.
 */
-static key_t decode_control_character(char currentChar) {
-    key_t newKey = {UNKNOWN, NONE};
+static sh_key_t decode_control_character(char currentChar) {
+    sh_key_t newKey = {UNKNOWN, NONE};
 
     switch (currentChar) {
     default:
@@ -360,9 +360,9 @@ void toggle_key_diagnostics(void) {
 }
 
 // returns a key object that identifies the pressed key
-key_t identify_key(char currentChar) {
+sh_key_t identify_key(char currentChar) {
     sequence_t sequence = new_sequence();
-    key_t key = {UNKNOWN, NONE};
+    sh_key_t key = {UNKNOWN, NONE};
 
     if (currentChar == KEY_ESC) {
         sequence = intercept_escape_sequence();
