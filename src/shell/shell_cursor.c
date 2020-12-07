@@ -5,8 +5,7 @@
 /* ************************************************************************** */
 
 void draw_shell_prompt(void) {
-    print(SHELL_PROMPT_STRING);
-    reset_text_attributes();
+    print(SHELL_PROMPT_STRING); //
 }
 
 /* -------------------------------------------------------------------------- */
