@@ -19,6 +19,8 @@ extern shell_args_t new_args(void);
 
 extern void command_processer_init(void);
 
+extern void register_command(shell_program_t program, const char *command);
+
 // prints all commands that are registered in the master command list
 extern void print_command_list(void);
 

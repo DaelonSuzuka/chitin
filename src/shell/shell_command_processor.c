@@ -14,57 +14,16 @@ shell_args_t new_args(void) {
 }
 
 /* ************************************************************************** */
-/*  Shell Command List
 
-    The shell command list is assembled at compile time. Each shell command
-    definition must be accompanied by a call to the REGISTER_SHELL_COMMAND()
-    macro. Here's an example shell command declaration and registration call.
+shell_command_t commandList[10] = {0};
+uint8_t number_of_commands = 0;
 
-        void shell_example(int argc, char **argv) { <snip> }
-        REGISTER_SHELL_COMMAND(shell_example, "example");
+uint8_t calculate_number_of_commands(void) { return number_of_commands; }
 
-    This macro expands to something like the following:
-        const shell_command_t __section("shell_cmds") example_cmd =
-        {shell_example, "example"};
-
-    This creates a shell_command_t object named example_cmd, initializes it with
-    a function pointer shell_example() and the string that should be matched
-    with this shell command. This shell_command_t is marked const, so it lives
-    in ROM, and the compiler/linker is instructed to place this object into a
-    PSECT labeled "shell_cmds".
-
-    The end result is that we're using the linker to construct an array of
-    shell_command_t's. The entire process is a bit roundabout, but without it
-    we'd have a gross dependency inversion where this file would need to include
-    files from the user code and then call their init functions to register each
-    command into the array. That process was very error prone and generated a
-    lot of extra boilerplate code and extra noise in commits. It also had the
-    unfortunate side-effect of causing this shell code to break if the project
-    didn't have the expected files in the expected place.
-
-    !This linker-array-construction does impose one requirement on the project:
-    !The compiler MUST be called with "-Pshell_cmds" added to its flags.
-
-    If this flag isn't added to the compiler, the Linker will not give values to
-    the symblols _Lshell_cmds or _Hshell_cmds, which are vital to
-    accessing the command table from C code.
-*/
-
-// The linker defines these during compilation.
-extern const char _Lshell_cmds[]; // start of shell_cmds
-extern const char _Hshell_cmds[]; // end of shell_cmds
-
-// Use the linker-defined symbols to calculate how many commands are registered
-uint8_t calculate_number_of_commands(void) {
-    uint16_t commandListLength = _Hshell_cmds - _Lshell_cmds;
-    return commandListLength / sizeof(shell_command_t);
-}
-
-// Create and initialize a pointer we can use to retrieve the command list
-const shell_command_t *commandList;
-
-void command_processer_init(void) {
-    commandList = (const shell_command_t *)_Lshell_cmds;
+void register_command(shell_program_t program, const char *command) {
+    commandList[number_of_commands].program = program;
+    commandList[number_of_commands].command = command;
+    number_of_commands++;
 }
 
 // Print all registered shell commands
@@ -72,6 +31,49 @@ void print_command_list(void) {
     for (uint8_t i = 0; i < calculate_number_of_commands(); i++) {
         println(commandList[i].command);
     }
+}
+
+/* -------------------------------------------------------------------------- */
+
+// prints all registered commands
+void shell_help(int argc, char **argv) {
+    println("-----------------------------------------------");
+    print_command_list();
+    println("-----------------------------------------------");
+}
+
+void shell_arg_test(int argc, char **argv) {
+    println("-----------------------------------------------");
+    println("SHELL ARG PARSING TEST UTILITY");
+    if (argc == 1) {
+        println("This command has no special arguments.");
+        println("It is designed to test the TuneOS shell's arg parsing.");
+        println("Use it like this:");
+        println("\"$ test command arg1 arg2 arg3\"");
+        println("");
+        println("To get this response:");
+        println("Received 4 arguments for test command");
+        println("1 - \"command\" [len:7]");
+        println("2 - \"arg1\" [len:4]");
+        println("3 - \"arg2\" [len:4]");
+        println("4 - \"arg3\" [len:4]");
+    } else {
+        printf("Received %d arguments for test command\r\n", argc - 1);
+
+        // Prints: <argNum> - "<string>" [len:<length>]
+        for (uint8_t i = 1; i < argc; i++) {
+            // printf("%u - \"%s\" [len:%u]\r\n", i, argv[i], str_len(argv[i]));
+            printf("%u - \"", i);
+            print(argv[i]);
+            printf("\" [len:%lu]\r\n", strlen(argv[i]));
+        }
+    }
+    println("-----------------------------------------------");
+}
+
+void command_processer_init(void) {
+    register_command(shell_help, "help"); //
+    register_command(shell_arg_test, "test"); //
 }
 
 /* ************************************************************************** */
