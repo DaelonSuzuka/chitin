@@ -46,7 +46,7 @@ extern shell_line_t shell;
 /* ************************************************************************** */
 
 // setup
-extern void shell_init();
+extern void shell_init(void);
 
 /*	Main Shell processing
 
