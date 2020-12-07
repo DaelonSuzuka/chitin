@@ -10,5 +10,5 @@ FILES += src/shell/shell_history.c
 
 
 run: 
-	clang -pthread -lm -o main $(FILES)
+	clang -pthread -lm -Isrc -o main $(FILES)
 	./main
