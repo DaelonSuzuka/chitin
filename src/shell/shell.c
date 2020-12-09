@@ -49,6 +49,11 @@ void sh_println(const char *string) {
 
 /* ************************************************************************** */
 
+// builtin shell commands
+extern void shell_help(int argc, char **argv);
+extern void shell_arg_test(int argc, char **argv);
+extern void shell_version(int argc, char **argv);
+
 // set up the entire shell subsystem
 void shell_init(void) {
     // initialize shell
@@ -58,8 +63,12 @@ void shell_init(void) {
     // shell history
     shell_history_init();
 
-    command_processer_init();
+    // register builtins
+    register_command(shell_help, "help");
+    register_command(shell_arg_test, "test");
+    register_command(shell_version, "version");
 
+    // draw a prompt so the user know we're alive
     draw_shell_prompt();
 }
 

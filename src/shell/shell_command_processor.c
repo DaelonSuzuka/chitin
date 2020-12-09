@@ -1,8 +1,14 @@
 #include "shell_command_processor.h"
 #include "shell.h"
+#include "shell_config.h"
 #include <string.h>
 
 /* ************************************************************************** */
+
+typedef struct {
+    uint8_t argc;
+    char *argv[CONFIG_SHELL_MAX_COMMAND_ARGS];
+} shell_args_t;
 
 // returns an initialized shell_args_t object
 shell_args_t new_args(void) {
@@ -14,41 +20,27 @@ shell_args_t new_args(void) {
 
 /* ************************************************************************** */
 
-shell_command_t commandList[10] = {0};
+shell_command_t commandList[MAXIMUM_NUM_OF_SHELL_COMMANDS] = {0};
 uint8_t number_of_commands = 0;
 
-uint8_t calculate_number_of_commands(void) { return number_of_commands; }
-
-void register_command(shell_program_t program, const char *command) {
-    commandList[number_of_commands].program = program;
+void register_command(command_function_t function, const char *command) {
+    commandList[number_of_commands].function = function;
     commandList[number_of_commands].command = command;
     number_of_commands++;
 }
 
 // Print all registered shell commands
 void print_command_list(void) {
-    for (uint8_t i = 0; i < calculate_number_of_commands(); i++) {
+    for (uint8_t i = 0; i < number_of_commands; i++) {
         sh_println(commandList[i].command);
     }
-}
-
-/* -------------------------------------------------------------------------- */
-
-extern void shell_help(int argc, char **argv);
-extern void shell_arg_test(int argc, char **argv);
-extern void shell_version(int argc, char **argv);
-
-void command_processer_init(void) {
-    register_command(shell_help, "help");       //
-    register_command(shell_arg_test, "test");   //
-    register_command(shell_version, "version"); //
 }
 
 /* ************************************************************************** */
 
 // returns the index in list whose command matches the given string
 int8_t find_command_in_list(char *string) {
-    for (uint8_t i = 0; i < calculate_number_of_commands(); i++) {
+    for (uint8_t i = 0; i < number_of_commands; i++) {
         // If string matches one on the list
         if (!strcmp(string, commandList[i].command)) {
             return i;
@@ -78,7 +70,7 @@ int8_t process_shell_command(shell_line_t *line) {
 
     // if we found a valid command, execute it
     if (command != -1) {
-        commandList[command].program(args.argc, args.argv);
+        commandList[command].function(args.argc, args.argv);
 
         return 0;
     }

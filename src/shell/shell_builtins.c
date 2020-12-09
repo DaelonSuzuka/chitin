@@ -1,10 +1,5 @@
-
-#include "shell_command_processor.h"
 #include "shell_command_utils.h"
 #include "shell_config.h"
-#include "shell_keys.h"
-#include <stdio.h>
-#include <string.h>
 
 /* ************************************************************************** */
 
@@ -40,7 +35,7 @@ void shell_arg_test(int argc, char **argv) {
             // printf("%u - \"%s\" [len:%u]\r\n", i, argv[i], str_len(argv[i]));
             printf("%u - \"", i);
             sh_print(argv[i]);
-            printf("\" [len:%u]\r\n", strlen(argv[i]));
+            printf("\" [len:%u]\r\n", (uint16_t)strlen(argv[i]));
         }
     }
     sh_println("-----------------------------------------------");

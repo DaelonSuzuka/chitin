@@ -3,7 +3,6 @@
 
 /* ************************************************************************** */
 
-#include "shell_command_utils.h"
 #include "shell_config.h"
 #include <stdint.h>
 
