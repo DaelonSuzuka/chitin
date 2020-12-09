@@ -50,6 +50,8 @@ void shell_init(void) {
     shell_history_init();
 
     command_processer_init();
+    
+    draw_shell_prompt();
 }
 
 /* ************************************************************************** */
