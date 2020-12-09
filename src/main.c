@@ -20,9 +20,9 @@ int main(void) {
     shell_init();
 
     while (1) {
-        // char currentChar = getchar();
-        // shell_update(currentChar);
-        shell_update();
+        char currentChar = getchar();
+        shell_update(currentChar);
+        // shell_update();
     }
 
     reset_termios();

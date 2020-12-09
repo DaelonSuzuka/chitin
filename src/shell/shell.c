@@ -149,9 +149,7 @@ void process_escape_sequence(sh_key_t key) {
 
 /* -------------------------------------------------------------------------- */
 
-void shell_update(void) {
-    char currentChar = getchar();
-
+void shell_update(char currentChar) {
     // execute shell callback, if one is registered
     if (shellCallback) {
         // ctrl+c forces the program to terminate

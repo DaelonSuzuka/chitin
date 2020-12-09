@@ -41,12 +41,7 @@ extern void sh_println(const char *string);
 // setup
 extern void shell_init(void);
 
-/*	Main Shell processing
-
-    This function implements the main functionality of the command line
-    interface this function should be called frequently so it can handle the
-    input from the data stream.
-*/
-extern void shell_update(void);
+//
+extern void shell_update(char currentChar);
 
 #endif // _SHELL_H_
