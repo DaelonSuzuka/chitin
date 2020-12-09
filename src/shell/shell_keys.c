@@ -129,6 +129,7 @@ static sh_key_t decode_escape_sequence(sequence_t *sequence) {
             newKey.key = F4;
             return newKey;
         }
+        return newKey;
     case 3:
         if (sequence->buffer[2] == '~') {
             switch (sequence->buffer[1]) {
