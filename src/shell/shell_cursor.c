@@ -88,7 +88,7 @@ void insert_char_at_cursor(shell_line_t *line, char currentChar) {
     // process is easier if cursor is already at end of line
     if (line->cursor == line->length) {
         // print the new char
-        putch(currentChar);
+        printf("%c", currentChar);
 
         // add the new char to the buffer
         line->buffer[line->cursor] = currentChar;

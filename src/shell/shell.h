@@ -9,12 +9,10 @@
 
 /* ************************************************************************** */
 
-typedef void (*sh_putch_t)(char);
 typedef char (*sh_getch_t)(void);
 typedef void (*sh_print_t)(const char *string);
 typedef void (*sh_println_t)(const char *string);
 
-extern sh_putch_t sh_putch;
 extern sh_getch_t sh_getch;
 extern sh_print_t sh_print;
 extern sh_println_t sh_println;

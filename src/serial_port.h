@@ -6,7 +6,6 @@
 /* ************************************************************************** */
 
 #define getch getchar
-#define putch putchar
 
 #define print(string) printf("%s", string)
 #define println(string) printf("%s \r\n", string)

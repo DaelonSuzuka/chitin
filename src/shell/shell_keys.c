@@ -39,7 +39,7 @@ sequence_t new_sequence(void) {
 void print_sequence(sequence_t sequence) {
     print("{");
     for (uint8_t i = 0; i < sequence.length; i++) {
-        putch(sequence.buffer[i]);
+        printf("%c", sequence.buffer[i]);
     }
 
     print("}");
