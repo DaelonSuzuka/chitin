@@ -6,7 +6,7 @@ FILES += src/shell/shell_keys.c
 FILES += src/shell/shell_cursor.c 
 FILES += src/shell/shell_command_processor.c
 FILES += src/shell/shell_history.c
-# FILES += src/shell/shell_builtin_commands.c
+FILES += src/shell/shell_builtins.c
 
 
 run: 

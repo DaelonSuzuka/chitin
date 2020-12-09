@@ -35,45 +35,14 @@ void print_command_list(void) {
 
 /* -------------------------------------------------------------------------- */
 
-// prints all registered commands
-void shell_help(int argc, char **argv) {
-    println("-----------------------------------------------");
-    print_command_list();
-    println("-----------------------------------------------");
-}
-
-void shell_arg_test(int argc, char **argv) {
-    println("-----------------------------------------------");
-    println("SHELL ARG PARSING TEST UTILITY");
-    if (argc == 1) {
-        println("This command has no special arguments.");
-        println("It is designed to test the TuneOS shell's arg parsing.");
-        println("Use it like this:");
-        println("\"$ test command arg1 arg2 arg3\"");
-        println("");
-        println("To get this response:");
-        println("Received 4 arguments for test command");
-        println("1 - \"command\" [len:7]");
-        println("2 - \"arg1\" [len:4]");
-        println("3 - \"arg2\" [len:4]");
-        println("4 - \"arg3\" [len:4]");
-    } else {
-        printf("Received %d arguments for test command\r\n", argc - 1);
-
-        // Prints: <argNum> - "<string>" [len:<length>]
-        for (uint8_t i = 1; i < argc; i++) {
-            // printf("%u - \"%s\" [len:%u]\r\n", i, argv[i], str_len(argv[i]));
-            printf("%u - \"", i);
-            print(argv[i]);
-            printf("\" [len:%lu]\r\n", strlen(argv[i]));
-        }
-    }
-    println("-----------------------------------------------");
-}
+extern void shell_help(int argc, char **argv);
+extern void shell_arg_test(int argc, char **argv);
+extern void shell_version(int argc, char **argv);
 
 void command_processer_init(void) {
     register_command(shell_help, "help"); //
     register_command(shell_arg_test, "test"); //
+    register_command(shell_version, "version"); //
 }
 
 /* ************************************************************************** */
