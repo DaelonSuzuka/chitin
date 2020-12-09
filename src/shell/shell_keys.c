@@ -320,6 +320,7 @@ typedef enum {
     KEY_CTRL_D = 4,
     KEY_CTRL_E = 5,
     KEY_BS = 8,
+    KEY_BS2 = 127,
     KEY_TAB = 9,
     KEY_LF = 10,
     KEY_CR = 13,
@@ -341,6 +342,7 @@ static sh_key_t decode_control_character(char currentChar) {
     default:
         return newKey;
     case KEY_BS:
+    case KEY_BS2:
         newKey.key = BACKSPACE;
         return newKey;
     case KEY_LF:
