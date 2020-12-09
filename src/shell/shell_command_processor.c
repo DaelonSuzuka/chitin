@@ -1,5 +1,4 @@
 #include "shell_command_processor.h"
-#include "serial_port.h"
 #include "shell.h"
 #include <string.h>
 
@@ -29,7 +28,7 @@ void register_command(shell_program_t program, const char *command) {
 // Print all registered shell commands
 void print_command_list(void) {
     for (uint8_t i = 0; i < calculate_number_of_commands(); i++) {
-        println(commandList[i].command);
+        sh_println(commandList[i].command);
     }
 }
 
@@ -40,8 +39,8 @@ extern void shell_arg_test(int argc, char **argv);
 extern void shell_version(int argc, char **argv);
 
 void command_processer_init(void) {
-    register_command(shell_help, "help"); //
-    register_command(shell_arg_test, "test"); //
+    register_command(shell_help, "help");       //
+    register_command(shell_arg_test, "test");   //
     register_command(shell_version, "version"); //
 }
 

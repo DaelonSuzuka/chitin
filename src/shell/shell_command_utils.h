@@ -1,7 +1,7 @@
 #ifndef _SHELL_COMMAND_UTILS_H_
 #define _SHELL_COMMAND_UTILS_H_
 
-#include "serial_port.h"
+#include "shell.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,7 +14,7 @@
     'world!'. We can define that as:
 
     void sh_hello(int argc, char **argv) {
-        print("world!");
+        sh_print("world!");
     }
 
     Now we've got a shell command function, but the command processor doesn't
@@ -46,7 +46,7 @@ typedef struct {
 
 // Macro to create a shell_command_t struct for you
 #define REGISTER_SHELL_COMMAND(pointer, string)                                \
-    const shell_command_t __section("shell_cmds")                          \
+    const shell_command_t __section("shell_cmds")                              \
         pointer##_cmd = {pointer, string}
 
 /* ************************************************************************** */
@@ -59,8 +59,8 @@ typedef int8_t (*shell_callback_t)(char currentChar);
     The normal behavior of shell_update() is to call getch() to see if the user
     has typed anything. Text goes into the line buffer, control characters..
     control something, and if the user hits ENTER, then the shell will process
-    the line buffer and run a shell command if applicable. Since there's no 
-    pre-emption, this command just runs to completion and then the shell goes 
+    the line buffer and run a shell command if applicable. Since there's no
+    pre-emption, this command just runs to completion and then the shell goes
     back to processing incoming characters.
 
     However, when a shell callback is registered, the shell will call getch(),
@@ -70,7 +70,7 @@ typedef int8_t (*shell_callback_t)(char currentChar);
 
     An interactive shell program has relatively exclusive access to the serial
     port, and can implement any behavior it wants. It can clear the screen and
-    print a bunch of text, it can draw ascii art, it create an interactive 
+    print a bunch of text, it can draw ascii art, it create an interactive
     viewport that lets you use the arrow keys to step through the contents of
     ROM.
 

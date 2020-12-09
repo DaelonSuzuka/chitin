@@ -3,21 +3,11 @@
 
 /* ************************************************************************** */
 
-#include "shell_config.h"
 #include "shell_command_utils.h"
+#include "shell_config.h"
 #include <stdint.h>
 
 /* ************************************************************************** */
-
-typedef char (*sh_getch_t)(void);
-typedef void (*sh_print_t)(const char *string);
-typedef void (*sh_println_t)(const char *string);
-
-extern sh_getch_t sh_getch;
-extern sh_print_t sh_print;
-extern sh_println_t sh_println;
-
-/* -------------------------------------------------------------------------- */
 
 /*  shell_line_t
 
@@ -31,9 +21,6 @@ typedef struct {
     uint8_t cursor;
 } shell_line_t;
 
-// make sure there's a terminating null character at the end of the line
-#define shell_add_terminator_to_line(line) line.buffer[line.length] = '\0'
-
 // erase a line
 #define shell_reset_line(line) memset(&line, 0, sizeof(shell_line_t));
 
@@ -42,6 +29,14 @@ typedef struct {
 extern shell_line_t shell;
 
 /* ************************************************************************** */
+
+//
+extern void sh_print(const char *string);
+
+//
+extern void sh_println(const char *string);
+
+/* -------------------------------------------------------------------------- */
 
 // setup
 extern void shell_init(void);

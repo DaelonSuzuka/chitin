@@ -1,5 +1,4 @@
 #include "shell.h"
-#include "serial_port.h"
 #include "shell_command_processor.h"
 #include "shell_cursor.h"
 #include "shell_history.h"
@@ -38,6 +37,16 @@ static void terminate_current_program(void) {
     term_show_cursor();
 }
 
+/* -------------------------------------------------------------------------- */
+
+void sh_print(const char *string) {
+    printf("%s", string); //
+}
+
+void sh_println(const char *string) {
+    printf("%s\r\n", string); //
+}
+
 /* ************************************************************************** */
 
 // set up the entire shell subsystem
@@ -50,7 +59,7 @@ void shell_init(void) {
     shell_history_init();
 
     command_processer_init();
-    
+
     draw_shell_prompt();
 }
 
@@ -67,9 +76,10 @@ void process_escape_sequence(sh_key_t key) {
         }
         return;
     case ENTER:
-        println("");
+        sh_println("");
         if (shell.length > 0) {
-            shell_add_terminator_to_line(shell);
+            // add terminating null to line buffer
+            shell.buffer[shell.length] = '\0';
 
             // Push the current line to history before it gets mangled
             shell_history_push();
@@ -140,7 +150,7 @@ void process_escape_sequence(sh_key_t key) {
 /* -------------------------------------------------------------------------- */
 
 void shell_update(void) {
-    char currentChar = getch();
+    char currentChar = getchar();
 
     // execute shell callback, if one is registered
     if (shellCallback) {

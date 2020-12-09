@@ -1,11 +1,11 @@
 #include "shell_cursor.h"
-#include "serial_port.h"
+#include "shell.h"
 #include "shell_utils.h"
 
 /* ************************************************************************** */
 
 void draw_shell_prompt(void) {
-    print(SHELL_PROMPT_STRING); //
+    sh_print(SHELL_PROMPT_STRING); //
 }
 
 /* -------------------------------------------------------------------------- */
@@ -63,7 +63,7 @@ void draw_line(shell_line_t *line) {
     term_clear_to_right();
 
     // reprint existing line
-    print(line->buffer);
+    sh_print(line->buffer);
 
     // restore the cursor's original position
     move_cursor_to(line, line->cursor);
@@ -73,7 +73,7 @@ void draw_line_from_cursor(shell_line_t *line) {
     term_clear_to_right();
 
     // reprint existing line, starting at the cursor position
-    print(&line->buffer[line->cursor]);
+    sh_print(&line->buffer[line->cursor]);
 
     // restore the cursor's original position
     move_cursor_to(line, line->cursor);

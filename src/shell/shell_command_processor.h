@@ -2,8 +2,8 @@
 #define _SHELL_COMMAND_PROCESSOR_H_
 
 #include "shell.h"
-#include "shell_config.h"
 #include "shell_command_utils.h"
+#include "shell_config.h"
 #include <stdint.h>
 
 /* ************************************************************************** */

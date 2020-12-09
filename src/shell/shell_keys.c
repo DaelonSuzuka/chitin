@@ -1,7 +1,8 @@
 #include "shell_keys.h"
-#include "serial_port.h"
+#include "shell.h"
 #include "shell_config.h"
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 
 /* ************************************************************************** */
@@ -13,10 +14,10 @@ const char *keyModifierString[] = {KEY_MODIFIER_LIST};
 
 void print_key(sh_key_t *key) {
     if (key->mod != NONE) {
-        print(keyModifierString[key->mod]);
-        print(" + ");
+        sh_print(keyModifierString[key->mod]);
+        sh_print(" + ");
     }
-    print(keyNameString[key->key]);
+    sh_print(keyNameString[key->key]);
 }
 
 /* ************************************************************************** */
@@ -37,12 +38,12 @@ sequence_t new_sequence(void) {
 }
 
 void print_sequence(sequence_t sequence) {
-    print("{");
+    sh_print("{");
     for (uint8_t i = 0; i < sequence.length; i++) {
         printf("%c", sequence.buffer[i]);
     }
 
-    print("}");
+    sh_print("}");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -292,7 +293,7 @@ static sequence_t intercept_escape_sequence(void) {
     int count = 0;
     while (1) {
         // check for a new character
-        sequence.buffer[sequence.length] = getch();
+        sequence.buffer[sequence.length] = getchar();
         // if valid character, move to next spot in buffer
         if (sequence.buffer[sequence.length] != 0) {
             sequence.length++;
@@ -360,12 +361,11 @@ static sh_key_t decode_control_character(char currentChar) {
 static bool diagnosticsEnabled = false;
 
 void toggle_key_diagnostics(void) {
-
     diagnosticsEnabled = !diagnosticsEnabled;
     if (diagnosticsEnabled) {
-        println("\r\nEscape sequence diagnostics enabled.");
+        sh_println("\r\nEscape sequence diagnostics enabled.");
     } else {
-        println("\r\nEscape sequence diagnostics disabled.");
+        sh_println("\r\nEscape sequence diagnostics disabled.");
     }
 }
 
@@ -387,9 +387,9 @@ sh_key_t identify_key(char currentChar) {
         } else {
             printf("{%d} ", currentChar);
         }
-        print(" ");
+        sh_print(" ");
         print_key(&key);
-        println("");
+        sh_println("");
     }
 
     return key;
